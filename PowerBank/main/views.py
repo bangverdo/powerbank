@@ -62,18 +62,21 @@ def remit(request):
                         if gmoney.money < int(request.POST.get("bak")):
                             context.update({'error':"잔고가 부족합니다."})
                         else:
-                            gmoney.money = gmoney.money - int(request.POST.get("bak"))
-                            pmoney.money = pmoney.money + int(request.POST.get("bak"))
-                            gmoney.save()
-                            pmoney.save()
-                            a = start_log('goverment')
-                            b = start_log(puser)
-                            c = start_log(User.get_username(user))
-                            logger.info(User.get_username(user)+ " 송금 " +  request.POST.get("bak") + "박 " + puser)
-                            context.update({'error':"정상적으로 처리되었습니다."})
-                            stop_log(a)
-                            stop_log(b)
-                            stop_log(c)
+                            if str(User.get_username(user)) == str(puser):
+                                context.update({'error':"본인에게 송금은 불가합니다."})
+                            else:
+                                gmoney.money = gmoney.money - int(request.POST.get("bak"))
+                                pmoney.money = pmoney.money + int(request.POST.get("bak"))
+                                gmoney.save()
+                                pmoney.save()
+                                a = start_log('goverment')
+                                b = start_log(puser)
+                                c = start_log(User.get_username(user))
+                                logger.info(User.get_username(user)+ " 송금 " +  request.POST.get("bak") + "박 " + puser)
+                                context.update({'error':"정상적으로 처리되었습니다."})
+                                stop_log(a)
+                                stop_log(b)
+                                stop_log(c)
                         return render(request, "main/remit.html",context)
                     
                 context.update({'error':"받는 사람 이름을 다시 확인해주세요."})
