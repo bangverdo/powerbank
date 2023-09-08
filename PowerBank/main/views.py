@@ -55,6 +55,8 @@ def remit(request):
                         gmoney = Bak.objects.get(user=user)
                         
                         pid = str(User.objects.filter(username=puser).values('id'))[18:20]
+                        if "}" in pid:
+                            pid = pid[0:1]
                         pmoney = Bak.objects.get(user=int(pid))
 
                         if gmoney.money < int(request.POST.get("bak")):
@@ -120,7 +122,10 @@ def gmoney(request):
             for pname in User.objects.values('username'):
                 if "%s"%pname in "{'username': '%s'}"%puser:
                     
+                    
                     pid = str(User.objects.filter(username=puser).values('id'))[18:20]
+                    if "}" in pid:
+                            pid = pid[0:1]
                     pmoney = Bak.objects.get(user=int(pid))
                     a = start_log('goverment')
                     b = start_log(puser)
