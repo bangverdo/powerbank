@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>파워뱅크</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+
+    <style>
+        * {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 100;
+            font-size: 20px;
+        }
+        h1 {
+            font-size: 60px;
+            
+        }
+        .power {
+            text-align: center;
+        }
+        .a {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 40px;
+            width: 30%;
+            height: 600px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .b {
+            font-size: 30px;
+        }
+        html,
+        body {
+        width: 100vw;
+        height: 100vh;
+        }
+        label {
+            font-size: 30px;
+        }
+    </style>
+</head>
+{% if user.is_authenticated %}
+{% if user.is_staff %}
+<body>
+    <a class="nav-link b" href="{% url 'main:logout' %}">{{ user.username }} (로그아웃)</a>
+    <div class="power">
+        <a href=""><button type="button" class="btn btn-primary a">공무원관리<br>(coming soon)</button></a>
+        <a href="{% url 'main:gmoney' %}"><button type="button" class="btn btn-secondary a">상벌금</button></a>
+        <a href="{% url 'main:log' %}"><button type="button" class="btn btn-success a">재정로그</button></a>
+    </div>
+</body>
+{% else %}
+<body>
+    <a class="nav-link b" href="{% url 'main:logout' %}">{{ user.username }}님 (로그아웃)</a>
+    <a class="nav-link b" href="{% url 'main:change_pw' %}">(비밀번호 변경)</a>
+    <div class="power">
+    <a href="{% url 'main:remit' %}"><button type="button" class="btn btn-primary a">송금</button></a>
+    <a href=""><button type="button" class="btn btn-secondary a">구매<br>(coming soon)</button></a>
+    <a href="{% url 'main:balance' %}"><button type="button" class="btn btn-success a">잔고</button></a>
+    </div>
+</body>
+{% endif %}
+{% else %}
+<body>
+    <div class="power">
+        <img src="{% static 'bank.png' %}" alt="My Image" height="100">
+        <h1>파워뱅크</h1>
+    </div>
+    
+    <div class="container my-3" style="width: 100%;">
+        <form method="post" action="{% url 'main:login' %}">
+            {% csrf_token %}
+            {% include "./form_errors.html" %}
+            <div class="mb-3">
+                <label for="username">사용자 이름</label>
+                <input type="text" class="form-control" name="username" id="username"
+                       value="{{ form.username.value|default_if_none:'' }}">
+            </div>
+            <div class="mb-3">
+                <label for="password">비밀번호</label>
+                <input type="password" class="form-control" name="password" id="password"
+                       value="{{ form.password.value|default_if_none:'' }}">
+            </div>
+            <button type="submit" class="btn btn-primary power">로그인</button>
+        </form>
+    </div>
+</body>
+{% endif %}
+</html>

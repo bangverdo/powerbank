@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>파워뱅크</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+
+    <style>
+        * {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 100;
+            font-size: 20px;
+        }
+        h1 {
+            font-size: 60px;
+            
+        }
+        .power {
+            text-align: center;
+        }
+        .a {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 40px;
+            width: 30%;
+            height: 600px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .b {
+            font-size: 30px;
+        }
+        html,
+        body {
+        width: 100vw;
+        height: 100vh;
+        }
+        label {
+            font-size: 30px;
+        }
+        p {
+            font-size: 30px;
+        }
+        .h {
+            font-size: 20px;
+        }
+    </style>
+</head>
+{% if user.is_authenticated %}
+<body>
+    <a class="nav-link b" href="{% url 'main:logout' %}">{{ user.username }} (로그아웃)</a>
+    <a class="nav-link b" href="{% url 'main:login' %}">홈으로</a>
+    <a class="nav-link b" href="{% url 'main:change_pw' %}">(비밀번호 변경)</a>
+    <form method="post" action="{% url 'main:gmoney' %}">
+        {% if user.is_staff %}
+        {% csrf_token %}
+        {{error}}
+        <div class="mb-3">
+            <label for="pname">대상인</label>
+            <input type="text" class="form-control" name="pname" id="pname"
+                   value="{{ form.pname.value|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <label for="bak">금액</label>
+            <input type="number" class="form-control" name="bak" id="bak"
+                   value="{{ form.bak.value|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <label for="why">사유</label>
+            <input required type="text" class="form-control" name="why" id="why"
+                   value="{{ form.pname.value|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <p>상/벌금</p>
+            <label class="h"><input type="radio" class="form-control" name="gtype" id="gtype" value="sang">상금</label>
+            <label class="h"><input type="radio" class="form-control" name="gtype" id="gtype" value="beul">벌금</label>
+        </div>
+        <button type="submit" class="btn btn-primary power">책정</button>
+    </form>
+    {% endif %}
+</body>
+{% endif %}
+</html>

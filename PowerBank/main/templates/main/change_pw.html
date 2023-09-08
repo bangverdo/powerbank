@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<style>
+        * {
+            font-family: 'Black Han Sans', sans-serif;
+            font-weight: 100;
+            font-size: 20px;
+        }
+        h1 {
+            font-size: 60px;
+            
+        }
+        .power {
+            text-align: center;
+        }
+        .a {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 40px;
+            width: 30%;
+            height: 600px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .b {
+            font-size: 30px;
+        }
+        html,
+        body {
+        width: 100vw;
+        height: 100vh;
+        }
+        label {
+            font-size: 30px;
+        }
+        strong {
+            font-size: 25px;
+            color: firebrick;
+        }
+</style>
+<div class="container">
+    <div class="login_container">
+        <a class="nav-link b" href="{% url 'main:login' %}">홈으로</a>
+                
+        <div class="login_title">
+            <h1>비밀번호 변경</h1>
+        </div>
+        <div class="error_message">
+            <strong>{{error}}</strong>
+        </div>
+        <form method="POST" action="{% url 'main:change_pw' %}" class="login_form">
+            {% csrf_token %}
+
+            <div class="login_input_container">
+                <div class="username_form_text">현재 비밀번호</div>
+                <div class="input_container">
+                    <input class="login_input" name="origin_password" type="password">
+                </div>
+
+                <div class="password_form_text"> 새로운 비밀번호</div>
+                <div class="input_container">
+                    <input class="login_input" name="password1" type="password">
+                </div>
+                <div class="confirm_password_form_text">비밀번호 재입력</div>
+                <div class="input_container">
+                    <input class="login_input" name="password2" type="password">
+                </div>
+            </div>
+            <div class="login_btn_container">
+                <input type="submit" class="login_btn" value="확인">
+            </div>
+    </div>
+    </form>
+</div>
