@@ -92,7 +92,7 @@ def balance(request):
     
     user = request.user
 
-    testFile = open(f'./logs/logfile_{User.get_username(user)}.log','rt')
+    testFile = open(f'./logs/logfile_{User.get_username(user)}.log','rt',encoding="utf8")
 
     gmoney = Bak.objects.get(user=user)
 
@@ -107,7 +107,7 @@ def balance(request):
 def log(request):
     context= {}
 
-    testFile = open('./logs/logfile_goverment.log','rt')
+    testFile = open('./logs/logfile_goverment.log','rt',encoding="utf8")
 
     logs = testFile.readlines()
     context.update({'logs':logs})
